@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int maxScore(vector<int>& card, int k) {
+        int n = card.size();
+        vector<long>sum(n,0);
+        sum[0] = card[0];
+                       // WE HAVE TO DISCARD THE WINDOW OF SIZE (N-K)
+           //SO WITH VECTOR SUM WE CAN EASILY CALCULATE SUM OF THAT WINDOW 
+        for(int i=1;i<n;i++)
+        {
+            sum[i] = sum[i-1] + card[i];
+        }
+
+        if(n==k)      //taking all elements
+        return sum[n-1];
+
+        int wind =n-k;  //size of window
+        int j = wind-1 , i=0 , total = sum[n-1];        // window from i to j
+        int score = total - sum[j] ,  ans = score;      //1 window me sum[i-1] = sum[-1] ho jaega islie alg se consider krlia h
+        j++ ; i++;  //shifting window
+
+          
+        while(j<n)
+        {
+            score = total-(sum[j] - sum[i-1]);     // finding sum of subarray of size wind and then subtracting it from total to get the sum of remaining elements that is our required result
+            ans = max(ans,score);
+            i++ ; j++;
+        }
+        return ans;
+
+
+    }
+};
